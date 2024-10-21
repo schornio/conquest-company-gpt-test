@@ -4,14 +4,30 @@ import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import { readStreamableValue } from 'ai/rsc';
 import { Markdown } from '@schornio/markdown-util/dist';
-import { CompanyGPTMessage } from '@/lib/CompanyGPT';
+import {
+  CompanyGPTDataCollection,
+  CompanyGPTMessage,
+  CompanyGPTRole,
+} from '@/lib/CompanyGPT';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { generateResponse } from '@/action/generateResponse';
+import { getMeta } from '@/action/getMeta';
 
 export default function Page() {
   const [apiKey, setApiKey] = useState<string>();
   const [loading, setLoading] = useState(false);
+
+  const [selectedRole, setSelectedRole] = useState<string>('');
+  const [selectedDataCollections, setSelectedDataCollections] = useState<
+    string[]
+  >([]);
+
+  const [meta, setMeta] = useState<{
+    dataCollections: CompanyGPTDataCollection[];
+    roles: CompanyGPTRole[];
+  } | null>(null);
+
   const [messages, setMessages] = useState<CompanyGPTMessage[]>([
     {
       content: 'Hallo, wie kann ich Ihnen helfen?',
@@ -26,6 +42,7 @@ export default function Page() {
 
     if (typeof apiKey === 'string') {
       setApiKey(apiKey);
+      getMeta(apiKey).then(setMeta);
     }
   };
 
@@ -51,7 +68,12 @@ export default function Page() {
       setMessages(newMessages);
       eventArgs.currentTarget.reset();
 
-      const { messageStream } = await generateResponse(newMessages, apiKey);
+      const { messageStream } = await generateResponse(
+        newMessages,
+        selectedRole,
+        selectedDataCollections,
+        apiKey,
+      );
 
       for await (const message of readStreamableValue(messageStream)) {
         setMessages([
@@ -97,10 +119,56 @@ export default function Page() {
               <Input name="message" placeholder="Ihre Nachricht..." />
               <Button disabled={loading}>Senden</Button>
             </form>
+            <hr />
+            <h2 className="text-center font-semibold">Rollen</h2>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                variant={selectedRole === '' ? undefined : 'outline'}
+                onClick={() => setSelectedRole('')}
+              >
+                Keine Rolle
+              </Button>
+              {meta?.roles.map((role) => (
+                <Button
+                  key={role.roleId}
+                  variant={role.roleId === selectedRole ? undefined : 'outline'}
+                  onClick={() => setSelectedRole(role.roleId)}
+                >
+                  {role.title}
+                </Button>
+              ))}
+            </div>
+            <hr />
+            <h2 className="text-center font-semibold">Datenspeicher</h2>
+            <div className="flex flex-wrap gap-3">
+              {meta?.dataCollections.map((dataCollection) => (
+                <Button
+                  key={dataCollection.id}
+                  variant={
+                    selectedDataCollections.includes(dataCollection.id)
+                      ? undefined
+                      : 'outline'
+                  }
+                  onClick={() => {
+                    setSelectedDataCollections((current) =>
+                      current.includes(dataCollection.id)
+                        ? current.filter((id) => id !== dataCollection.id)
+                        : [...current, dataCollection.id],
+                    );
+                  }}
+                >
+                  {dataCollection.name}
+                </Button>
+              ))}
+            </div>
           </>
         ) : (
           <form className="flex gap-3" onSubmit={onApiKey}>
-            <Input name="apiKey" placeholder="Ihre API Key..." />
+            <Input
+              type="password"
+              name="apiKey"
+              placeholder="Ihre API Key..."
+            />
             <Button disabled={loading}>Start</Button>
           </form>
         )}

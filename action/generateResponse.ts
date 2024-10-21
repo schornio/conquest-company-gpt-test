@@ -5,6 +5,8 @@ import { CompanyGPT, CompanyGPTMessage } from '@/lib/CompanyGPT';
 
 export async function generateResponse(
   messages: CompanyGPTMessage[],
+  roleId: string | undefined,
+  selectedDataCollections: string[],
   apiKey: string,
 ) {
   const cgpt = new CompanyGPT({ apiKey });
@@ -14,6 +16,8 @@ export async function generateResponse(
     model: {
       id: 'gpt-3.5-turbo',
     },
+    roleId,
+    selectedDataCollections,
     selectedMode: 'BASIC',
   });
 
