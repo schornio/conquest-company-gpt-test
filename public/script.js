@@ -1,4 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'complete') {
+  initializeChatBubble();
+} else {
+  document.addEventListener('DOMContentLoaded', initializeChatBubble);
+}
+
+function initializeChatBubble() {
   const chatBubble = document.createElement('div');
   chatBubble.id = 'chatBubble';
   chatBubble.style.position = 'fixed';
@@ -58,4 +64,4 @@ document.addEventListener('DOMContentLoaded', () => {
       chatBubble.style.display = 'none';
     }
   });
-});
+}
