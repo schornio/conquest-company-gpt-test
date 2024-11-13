@@ -3,22 +3,20 @@
 import { createStreamableValue } from 'ai/rsc';
 import { CompanyGPT, CompanyGPTMessage } from '@/lib/CompanyGPT';
 
-export async function generateResponse(
-  messages: CompanyGPTMessage[],
-  roleId: string | undefined,
-  selectedDataCollections: string[],
-  apiKey: string,
-) {
-  const cgpt = new CompanyGPT({ apiKey });
+const { PUBLIC_ROLE_ID } = process.env;
+const PUBLIC_DATA_COLLECTIONS = [process.env.PUBLIC_DATA_COLLECTION!];
+
+export async function generatePublicResponse(messages: CompanyGPTMessage[]) {
+  const cgpt = new CompanyGPT();
 
   const response = cgpt.chat({
     messages,
     model: {
       id: 'gpt-3.5-turbo',
     },
-    roleId,
-    selectedDataCollections,
-    selectedMode: selectedDataCollections.length > 0 ? 'QA' : 'BASIC',
+    roleId: PUBLIC_ROLE_ID,
+    selectedDataCollections: PUBLIC_DATA_COLLECTIONS,
+    selectedMode: 'QA',
   });
 
   const messageStream = createStreamableValue('');
