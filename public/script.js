@@ -9,9 +9,11 @@ function initializeChatBubble() {
   chatBubble.id = 'chatBubble';
   chatBubble.style.position = 'fixed';
   chatBubble.style.bottom = '70px';
-  chatBubble.style.right = '10px';
+  chatBubble.style.left = '50%';
+  chatBubble.style.zIndex = '9999';
   chatBubble.style.width = '300px';
   chatBubble.style.height = '400px';
+  chatBubble.style.transform = 'translateX(-50%)';
 
   chatBubble.style.borderRadius = '20px';
   chatBubble.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
@@ -31,7 +33,9 @@ function initializeChatBubble() {
   toggleButton.id = 'toggleButton';
   toggleButton.style.position = 'fixed';
   toggleButton.style.bottom = '10px';
-  toggleButton.style.right = '10px';
+  toggleButton.style.left = '50%';
+  toggleButton.style.transform = 'translateX(-50%)';
+  toggleButton.style.zIndex = '9999';
   toggleButton.style.width = '50px';
   toggleButton.style.height = '50px';
   toggleButton.style.borderRadius = '50%';
