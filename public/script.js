@@ -21,7 +21,7 @@ function initializeChatBubble() {
   chatBubble.style.overflow = 'hidden';
 
   const iframe = document.createElement('iframe');
-  iframe.src = 'http://localhost:3000/public';
+  iframe.src = 'https://conquest-company-gpt-test.vercel.app/public';
   iframe.width = '100%';
   iframe.height = '100%';
   iframe.style.border = 'none';
