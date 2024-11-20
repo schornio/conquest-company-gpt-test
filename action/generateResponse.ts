@@ -14,7 +14,7 @@ export async function generateResponse(
   const response = cgpt.chat({
     messages,
     model: {
-      id: 'gpt-3.5-turbo',
+      id: 'gpt-4o-mini',
     },
     roleId,
     selectedDataCollections,

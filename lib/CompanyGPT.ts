@@ -164,7 +164,6 @@ export class CompanyGPT {
       ...request,
       roleId: request.roleId ?? '',
       selectedDataCollections: request.selectedDataCollections ?? [],
-      selectedFiles: request.selectedFiles ?? [],
       temperature: request.temperature ?? 0.2,
     };
 

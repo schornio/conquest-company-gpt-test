@@ -12,7 +12,7 @@ export async function generatePublicResponse(messages: CompanyGPTMessage[]) {
   const response = cgpt.chat({
     messages,
     model: {
-      id: 'gpt-3.5-turbo',
+      id: 'gpt-4o-mini',
     },
     roleId: PUBLIC_ROLE_ID,
     selectedDataCollections: PUBLIC_DATA_COLLECTIONS,
