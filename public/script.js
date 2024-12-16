@@ -15,7 +15,7 @@ function initializeChatBubble() {
   chatBubble.style.height = '400px';
   chatBubble.style.transform = 'translateX(-50%)';
 
-  chatBubble.style.borderRadius = '20px';
+  chatBubble.style.borderRadius = '4px';
   chatBubble.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
   chatBubble.style.display = 'none';
   chatBubble.style.overflow = 'hidden';

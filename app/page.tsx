@@ -94,7 +94,7 @@ export default function Page() {
         width={200}
         height={200}
       />
-      <div className="flex flex-col gap-3 rounded-md border p-3">
+      <div className="flex flex-col gap-3 rounded-sm border p-3">
         {apiKey ? (
           <>
             {messages.map((message, index) => (
@@ -105,7 +105,7 @@ export default function Page() {
                 }`}
               >
                 <div
-                  className={`rounded-md p-3 ${
+                  className={`rounded-sm p-3 ${
                     message.role === 'assistant'
                       ? 'bg-secondary text-secondary-foreground'
                       : 'bg-primary text-primary-foreground'

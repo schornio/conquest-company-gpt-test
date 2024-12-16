@@ -14,7 +14,7 @@ export default function Page() {
 
   const [messages, setMessages] = useState<CompanyGPTMessage[]>([
     {
-      content: 'Hallo, wie kann ich Ihnen helfen?',
+      content: 'Hallo, wie kann ich dir helfen?',
       role: 'assistant',
     },
   ]);
@@ -59,7 +59,7 @@ export default function Page() {
         width={200}
         height={200}
       />
-      <div className="flex flex-1 flex-col gap-3 rounded-md p-3">
+      <div className="flex flex-1 flex-col gap-3 rounded-sm p-3">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -68,7 +68,7 @@ export default function Page() {
             }`}
           >
             <div
-              className={`rounded-md p-3 ${
+              className={`rounded-sm p-3 ${
                 message.role === 'assistant'
                   ? 'bg-secondary text-secondary-foreground'
                   : 'bg-primary text-primary-foreground'
@@ -79,7 +79,7 @@ export default function Page() {
           </div>
         ))}
         <form className="mt-auto flex gap-3" onSubmit={onSendMessage}>
-          <Input name="message" placeholder="Ihre Nachricht..." />
+          <Input name="message" placeholder="Deine Nachricht..." />
           <Button disabled={loading}>Senden</Button>
         </form>
       </div>
