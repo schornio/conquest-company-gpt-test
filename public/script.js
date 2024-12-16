@@ -8,7 +8,7 @@ function initializeChatBubble() {
   const chatBubble = document.createElement('div');
   chatBubble.id = 'chatBubble';
   chatBubble.style.position = 'fixed';
-  chatBubble.style.bottom = '70px';
+  chatBubble.style.bottom = '90px';
   chatBubble.style.left = '50%';
   chatBubble.style.zIndex = '9999';
   chatBubble.style.width = '300px';
@@ -36,10 +36,9 @@ function initializeChatBubble() {
   toggleButton.style.left = '50%';
   toggleButton.style.transform = 'translateX(-50%)';
   toggleButton.style.zIndex = '9999';
-  toggleButton.style.width = '50px';
-  toggleButton.style.height = '50px';
-  toggleButton.style.borderRadius = '50%';
-  toggleButton.style.backgroundColor = 'hsl(0 72.2% 50.6%)';
+  toggleButton.style.width = '80px';
+  toggleButton.style.height = '80px';
+  toggleButton.style.backgroundColor = 'transparent';
   toggleButton.style.border = 'none';
   toggleButton.style.display = 'flex';
   toggleButton.style.alignItems = 'center';
@@ -47,12 +46,11 @@ function initializeChatBubble() {
   toggleButton.style.cursor = 'pointer';
 
   const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svgIcon.setAttribute('width', '24');
-  svgIcon.setAttribute('height', '24');
-  svgIcon.setAttribute('viewBox', '176 0 19.5 19.5');
-  svgIcon.setAttribute('fill', 'white');
+  svgIcon.setAttribute('width', '60');
+  svgIcon.setAttribute('height', '60');
+  svgIcon.setAttribute('viewBox', '0 0 60 60');
   svgIcon.innerHTML =
-    '<path class="cls-1" d="m190.1,16.81h-8.28l-.65-1.12,1-3.6c3.77,1.53,7.34,1.65,8.36,1.65h.62s-.21-.45-.21-.45c-.69-1.49-1.07-2.83-1.2-3.31,1.08-1.37,2.11-3.26,2.12-3.28l.14-.25h-.29s-.79.04-1.03.04c-3.2,0-5.85-.9-6.61-1.19l.24-.84-1.34-.55-2.82,10.04-2.48-4.29,4.14-7.17h8.28l4.14,7.17-4.14,7.17Zm-1.85-6.95c.02.06.4,1.43.73,2.34-.95-.08-3.66-.38-6.42-1.53l1.11-3.96c.76.29,3.11,1.1,5.94,1.25-.41.55-1.33,1.74-1.34,1.76l-.05.07.02.08Zm2.73-8.9h-10.04l-5.02,8.69,5.02,8.69h10.04l5.02-8.69-5.02-8.69Z"/>';
+    '<polygon fill="#E10707" points="15,0 0,26 15,52 30,52 30,60 39.1,52 45,52 60,26 45,0 "/><g><path fill="#FFFFFF" d="M22.7,11.4c-5.5,0-9.9,4.4-9.9,9.9c0,5.5,4.4,9.9,9.9,9.9h14.5c5.5,0,9.9-4.4,9.9-9.9 c0-5.5-4.4-9.9-9.9-9.9H22.7z"/><path fill="#E10707" d="M38.8,24.9c2,0,3.6-1.6,3.6-3.6c0-2-1.6-3.6-3.6-3.6s-3.6,1.6-3.6,3.6C35.2,23.3,36.8,24.9,38.8,24.9"/><path fill="#E10707" d="M21.2,24.9c2,0,3.6-1.6,3.6-3.6c0-2-1.6-3.6-3.6-3.6s-3.6,1.6-3.6,3.6C17.5,23.3,19.2,24.9,21.2,24.9"/></g>';
 
   toggleButton.appendChild(svgIcon);
 
