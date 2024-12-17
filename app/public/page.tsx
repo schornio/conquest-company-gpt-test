@@ -6,8 +6,8 @@ import { readStreamableValue } from 'ai/rsc';
 import { Markdown } from '@schornio/markdown-util/dist';
 import { CompanyGPTMessage } from '@/lib/CompanyGPT';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { generatePublicResponse } from '@/action/generatePublicResponse';
+import { cn } from '@/lib/utils';
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -19,6 +19,29 @@ export default function Page() {
     },
   ]);
 
+  const sendMessage = async (message: string) => {
+    setLoading(true);
+    const newMessages = [
+      ...messages,
+      {
+        content: message,
+        role: 'user' as const,
+      },
+    ];
+
+    setMessages(newMessages);
+
+    const { messageStream } = await generatePublicResponse(newMessages);
+
+    for await (const message of readStreamableValue(messageStream)) {
+      setMessages([
+        ...newMessages,
+        { content: message ?? '', role: 'assistant' },
+      ]);
+    }
+    setLoading(false);
+  };
+
   const onSendMessage = async (eventArgs: FormEvent<HTMLFormElement>) => {
     eventArgs.preventDefault();
 
@@ -26,27 +49,8 @@ export default function Page() {
     const message = formData.get('message');
 
     if (typeof message === 'string') {
-      setLoading(true);
-      const newMessages = [
-        ...messages,
-        {
-          content: message,
-          role: 'user' as const,
-        },
-      ];
-
-      setMessages(newMessages);
+      await sendMessage(message);
       eventArgs.currentTarget.reset();
-
-      const { messageStream } = await generatePublicResponse(newMessages);
-
-      for await (const message of readStreamableValue(messageStream)) {
-        setMessages([
-          ...newMessages,
-          { content: message ?? '', role: 'assistant' },
-        ]);
-      }
-      setLoading(false);
     }
   };
 
@@ -59,28 +63,94 @@ export default function Page() {
         width={200}
         height={200}
       />
-      <div className="flex flex-1 flex-col gap-3 rounded-sm p-3">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`flex ${
-              message.role === 'assistant' ? 'justify-start' : 'justify-end'
-            }`}
-          >
+      <div className="flex flex-1 flex-col gap-3 rounded-sm">
+        <div className="flex flex-1 flex-col gap-3 p-3">
+          {messages.map((message, index) => (
             <div
-              className={`rounded-sm p-3 ${
-                message.role === 'assistant'
-                  ? 'bg-secondary text-secondary-foreground'
-                  : 'bg-primary text-primary-foreground'
-              }`}
+              key={index}
+              className={cn('flex items-start gap-3', {
+                'justify-end': message.role === 'user',
+                'justify-start': message.role === 'assistant',
+              })}
             >
-              <Markdown>{message.content}</Markdown>
+              {message.role === 'assistant' ? (
+                <Image src="/bot.svg" width={30} height={30} alt="Bot" />
+              ) : undefined}
+              <div className="flex flex-col gap-3">
+                <div
+                  className={cn('rounded-md p-3', {
+                    'rounded-bl-none bg-gray-100 text-secondary-foreground':
+                      message.role === 'assistant',
+                    'rounded-br-none bg-gray-700 text-primary-foreground':
+                      message.role === 'user',
+                  })}
+                >
+                  <Markdown>{message.content}</Markdown>
+                </div>
+                {index === messages.length - 1 &&
+                message.role === 'assistant' &&
+                !loading ? (
+                  <>
+                    <button
+                      className={
+                        'rounded-md rounded-bl-none border border-gray-700 p-1 px-2 text-left'
+                      }
+                      onClick={() => sendMessage('Was macht die Conquest?')}
+                    >
+                      Was macht die Conquest?
+                    </button>
+                    <button
+                      className={
+                        'rounded-md rounded-bl-none border border-gray-700 p-1 px-2 text-left'
+                      }
+                      onClick={() =>
+                        sendMessage('Wie kann ich euch erreichen?')
+                      }
+                    >
+                      Wie kann ich euch erreichen?
+                    </button>
+                  </>
+                ) : undefined}
+              </div>
             </div>
-          </div>
-        ))}
-        <form className="mt-auto flex gap-3" onSubmit={onSendMessage}>
-          <Input name="message" placeholder="Deine Nachricht..." />
-          <Button disabled={loading}>Senden</Button>
+          ))}
+        </div>
+        <form
+          className="mt-auto flex gap-3 border-t border-t-gray-400 p-3"
+          onSubmit={onSendMessage}
+        >
+          <Input
+            name="message"
+            placeholder="Deine Nachricht..."
+            className="border-0 shadow-none focus-visible:ring-0"
+          />
+          <button className="group" disabled={loading} type="submit">
+            {loading ? (
+              <Image
+                src="/CONQUEST_website_CHATBOT_send_pressed.svg"
+                width={50}
+                height={50}
+                alt=""
+              />
+            ) : (
+              <>
+                <Image
+                  src="/CONQUEST_website_CHATBOT_send_default.svg"
+                  width={50}
+                  height={50}
+                  alt=""
+                  className="group-hover:hidden"
+                />
+                <Image
+                  src="/CONQUEST_website_CHATBOT_send_hover.svg"
+                  width={50}
+                  height={50}
+                  alt=""
+                  className="hidden group-hover:block"
+                />
+              </>
+            )}
+          </button>
         </form>
       </div>
     </div>
