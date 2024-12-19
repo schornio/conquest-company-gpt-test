@@ -95,19 +95,31 @@ export default function Page() {
                       className={
                         'rounded-md rounded-bl-none border border-gray-700 p-1 px-2 text-left'
                       }
-                      onClick={() => sendMessage('Was macht die Conquest?')}
+                      onClick={() => sendMessage('Was macht ihr bei Conquest?')}
                     >
-                      Was macht die Conquest?
+                      Was macht ihr bei Conquest?
                     </button>
                     <button
                       className={
                         'rounded-md rounded-bl-none border border-gray-700 p-1 px-2 text-left'
                       }
                       onClick={() =>
-                        sendMessage('Wie kann ich euch erreichen?')
+                        sendMessage(
+                          'Wo liegen die Spezialgebiete der Conquest?',
+                        )
                       }
                     >
-                      Wie kann ich euch erreichen?
+                      Wo liegen die Spezialgebiete der Conquest?
+                    </button>
+                    <button
+                      className={
+                        'rounded-md rounded-bl-none border border-gray-700 p-1 px-2 text-left'
+                      }
+                      onClick={() =>
+                        sendMessage('Wie erreiche ich einen Ansprechpartner?')
+                      }
+                    >
+                      Wie erreiche ich einen Ansprechpartner?
                     </button>
                   </>
                 ) : undefined}
