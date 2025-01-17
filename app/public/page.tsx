@@ -35,7 +35,10 @@ export default function Page() {
         role: 'assistant',
       },
     ],
-    { store: sessionStorage, storeKey: 'messages' },
+    {
+      store: typeof window === 'undefined' ? undefined : window.sessionStorage,
+      storeKey: 'messages',
+    },
   );
 
   const sendMessage = async (message: string) => {
