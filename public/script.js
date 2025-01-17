@@ -11,8 +11,10 @@ function initializeChatBubble() {
   chatBubble.style.bottom = '90px';
   chatBubble.style.left = '50%';
   chatBubble.style.zIndex = '9999';
-  chatBubble.style.width = '300px';
-  chatBubble.style.height = '400px';
+  chatBubble.style.width = '100%';
+  chatBubble.style.maxWidth = '400px';
+  chatBubble.style.height = '100%';
+  chatBubble.style.maxHeight = '550px';
   chatBubble.style.transform = 'translateX(-50%)';
 
   chatBubble.style.borderRadius = '4px';
@@ -22,6 +24,7 @@ function initializeChatBubble() {
 
   const iframe = document.createElement('iframe');
   iframe.src = 'https://conquest-company-gpt-test.vercel.app/public';
+  // iframe.src = 'http://localhost:3000/public';
   iframe.width = '100%';
   iframe.height = '100%';
   iframe.style.border = 'none';

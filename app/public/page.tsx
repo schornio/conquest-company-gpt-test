@@ -3,11 +3,23 @@
 import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import { readStreamableValue } from 'ai/rsc';
-import { Markdown } from '@schornio/markdown-util/dist';
+import {
+  Markdown,
+  MarkdownComponentConfig,
+} from '@schornio/markdown-util/dist';
+import Link from 'next/link';
 import { CompanyGPTMessage } from '@/lib/CompanyGPT';
 import { Input } from '@/components/ui/input';
 import { generatePublicResponse } from '@/action/generatePublicResponse';
 import { cn } from '@/lib/utils';
+
+const markdownComponents: MarkdownComponentConfig = {
+  link: ({ children, content }) => (
+    <Link href={content.url} target="_top">
+      {children}
+    </Link>
+  ),
+};
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -85,9 +97,11 @@ export default function Page() {
                       message.role === 'user',
                   })}
                 >
-                  <Markdown>{message.content}</Markdown>
+                  <Markdown components={markdownComponents}>
+                    {message.content}
+                  </Markdown>
                 </div>
-                {index === messages.length - 1 &&
+                {messages.length === 1 &&
                 message.role === 'assistant' &&
                 !loading ? (
                   <>
@@ -128,7 +142,7 @@ export default function Page() {
           ))}
         </div>
         <form
-          className="mt-auto flex gap-3 border-t border-t-gray-400 p-3"
+          className="sticky bottom-0 mt-auto flex gap-3 border-t border-t-gray-400 bg-white p-3"
           onSubmit={onSendMessage}
         >
           <Input
