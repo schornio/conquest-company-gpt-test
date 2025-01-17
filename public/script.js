@@ -19,7 +19,10 @@ function initializeChatBubble() {
 
   chatBubble.style.borderRadius = '4px';
   chatBubble.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
-  chatBubble.style.display = 'none';
+  chatBubble.style.display =
+    sessionStorage.getItem('chatBubbleDisplay') === 'visible'
+      ? 'block'
+      : 'none';
   chatBubble.style.overflow = 'hidden';
 
   const iframe = document.createElement('iframe');
@@ -65,8 +68,10 @@ function initializeChatBubble() {
       chatBubble.style.display === ''
     ) {
       chatBubble.style.display = 'block';
+      sessionStorage.setItem('chatBubbleDisplay', 'visible');
     } else {
       chatBubble.style.display = 'none';
+      sessionStorage.setItem('chatBubbleDisplay', 'hidden');
     }
   });
 }

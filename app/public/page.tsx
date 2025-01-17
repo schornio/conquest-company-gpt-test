@@ -8,10 +8,12 @@ import {
   MarkdownComponentConfig,
 } from '@schornio/markdown-util/dist';
 import Link from 'next/link';
+import { MessageCirclePlus } from 'lucide-react';
 import { CompanyGPTMessage } from '@/lib/CompanyGPT';
 import { Input } from '@/components/ui/input';
 import { generatePublicResponse } from '@/action/generatePublicResponse';
 import { cn } from '@/lib/utils';
+import { usePersistentState } from '@/lib/usePersistentState';
 
 const markdownComponents: MarkdownComponentConfig = {
   link: ({ children, content }) => (
@@ -24,12 +26,17 @@ const markdownComponents: MarkdownComponentConfig = {
 export default function Page() {
   const [loading, setLoading] = useState(false);
 
-  const [messages, setMessages] = useState<CompanyGPTMessage[]>([
-    {
-      content: 'Hallo, wie kann ich dir helfen?',
-      role: 'assistant',
-    },
-  ]);
+  const [messages, setMessages, clearMessages] = usePersistentState<
+    CompanyGPTMessage[]
+  >(
+    [
+      {
+        content: 'Hallo, wie kann ich dir helfen?',
+        role: 'assistant',
+      },
+    ],
+    { store: sessionStorage, storeKey: 'messages' },
+  );
 
   const sendMessage = async (message: string) => {
     setLoading(true);
@@ -67,7 +74,7 @@ export default function Page() {
   };
 
   return (
-    <div className="m-auto flex w-full flex-1 flex-col">
+    <div className="relative m-auto flex w-full flex-1 flex-col">
       <Image
         src="/logo.svg"
         alt="Conquest Logo"
@@ -75,6 +82,16 @@ export default function Page() {
         width={200}
         height={200}
       />
+      <button
+        className="group absolute right-3 top-3"
+        type="button"
+        onClick={clearMessages}
+      >
+        <MessageCirclePlus className="h-5 w-5" strokeWidth={1} />
+        <div className="absolute right-0 top-full hidden text-nowrap rounded-md border bg-white px-1 text-sm group-hover:block">
+          Neuer Chat
+        </div>
+      </button>
       <div className="flex flex-1 flex-col gap-3 rounded-sm">
         <div className="flex flex-1 flex-col gap-3 p-3">
           {messages.map((message, index) => (
