@@ -187,7 +187,7 @@ export class CompanyGPT {
         break;
       }
       const decodedChunk = decoder.decode(value);
-      const sanitizedChunk = decodedChunk.replace(/^data:/gu, '');
+      const sanitizedChunk = decodedChunk.replace(/^data:/gmu, '');
       yield sanitizedChunk;
     }
   }
