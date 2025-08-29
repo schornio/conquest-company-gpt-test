@@ -12,7 +12,7 @@ export async function generatePublicResponse(messages: CompanyGPTMessage[]) {
   const response = cgpt.chat({
     messages,
     model: {
-      id: 'gpt-4o-mini',
+      id: 'gemini-2.5-flash',
     },
     roleId: PUBLIC_ROLE_ID,
     selectedDataCollections: PUBLIC_DATA_COLLECTIONS,
