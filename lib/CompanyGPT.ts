@@ -72,10 +72,14 @@ export class CompanyGPT {
     this.#apiSubdomain = apiSubdomain;
   }
 
-  #fetch = async (path: string, options?: RequestInit) => {
+  #fetch = async (
+    path: string,
+    version: 'v1' | 'v2',
+    options?: RequestInit,
+  ) => {
     const url = `https://${
       this.#apiSubdomain
-    }.506.ai:3003/api/v1/public/${path}`;
+    }.506.ai:3003/api/${version}/public/${path}`;
 
     const response = await fetch(url, {
       ...options,
@@ -96,19 +100,19 @@ export class CompanyGPT {
   };
 
   async getModels() {
-    const response = await this.#fetch('models');
+    const response = await this.#fetch('models', 'v1');
     const body = await response.json();
     return body as CompanyGPTModel[];
   }
 
   async getRoles() {
-    const response = await this.#fetch('roles');
+    const response = await this.#fetch('roles', 'v1');
     const body = await response.json();
     return body as CompanyGPTRole[];
   }
 
   async getDataCollections() {
-    const response = await this.#fetch('dataCollections');
+    const response = await this.#fetch('dataCollections', 'v2');
     const body = await response.json();
     return body as CompanyGPTDataCollection[];
   }
@@ -128,6 +132,7 @@ export class CompanyGPT {
 
     const response = await this.#fetch(
       `mediaByDataCollection/${dataCollectionId}?${searchParams.toString()}`,
+      'v2',
     );
     const body = await response.json();
     return body as {
@@ -144,7 +149,10 @@ export class CompanyGPT {
     searchParams.append('uniqueTitle', uniqueTitle);
     searchParams.append('chunkNr', chunkNr.toString());
 
-    const response = await this.#fetch(`chunk?${searchParams.toString()}`);
+    const response = await this.#fetch(
+      `chunk?${searchParams.toString()}`,
+      'v1',
+    );
     const body = await response.json();
     return body as CompanyGPTChunk;
   }
@@ -167,7 +175,7 @@ export class CompanyGPT {
       temperature: request.temperature ?? 0.2,
     };
 
-    const response = await this.#fetch('chat', {
+    const response = await this.#fetch('chat', 'v1', {
       body: JSON.stringify(requestComplete),
       headers: {
         'Content-Type': 'application/json',
